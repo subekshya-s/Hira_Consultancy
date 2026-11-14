@@ -2,3 +2,5 @@ Django>=5.2
 pillow
 pytest
 pytest-django
+gunicorn
+whitenoise
