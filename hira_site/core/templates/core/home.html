@@ -1,0 +1,152 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Engineering consultancy &middot; Koteshwor</p>
+    <h1>{{ site.tagline }}</h1>
+    <p class="lead">{{ site.hero_text }}</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="#services">Our services</a>
+      <a class="btn btn-outline" href="#projects">View projects</a>
+    </div>
+  </div>
+</section>
+
+<section class="block dark-2" id="about">
+  <div class="wrap split">
+    <div class ="reveal">
+      <p class="eyebrow">About us &middot; Estd. {{ site.established }}</p>
+      <h2>{{ site.company_name }}</h2>
+      <div class="muted prose">{{ site.about_text|linebreaks }}</div>
+    </div>
+    <div class="placeholder placeholder-dark reveal" style="--delay:.15s">[COMPANY OR TEAM PHOTO]</div>
+  </div>
+</section>
+
+<section class="block light" id="services">
+  <div class="wrap">
+    <p class="eyebrow">What we do</p>
+    <h2 class ="reveal">Our services</h2>
+    <div class="grid cards" data-stagger>
+      {% for service in services %}
+      <article class="card">
+        <div class="card-number">{{ forloop.counter|stringformat:"02d" }}</div>
+        <h3>{{ service.title }}</h3>
+        <p>{{ service.description }}</p>
+      </article>
+      {% empty %}
+      <p>No services yet. Add them in the admin panel.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="block dark">
+  <div class="wrap">
+    <h2 class ="reveal">How we work</h2>
+    <div class="grid steps" data-stagger>
+      <div class="step"><h3>1. Consult</h3><p>Site visit, requirements and a clear scope.</p></div>
+      <div class="step"><h3>2. Design</h3><p>Drawings and calculations agreed with you.</p></div>
+      <div class="step"><h3>3. Estimate</h3><p>Transparent quantities, costs and schedule.</p></div>
+      <div class="step"><h3>4. Supervise</h3><p>Site checks until the work is complete.</p></div>
+    </div>
+  </div>
+</section>
+
+{% if featured_projects %}
+<section class="block light" id="projects">
+  <div class="wrap">
+    <h2 class="reveal">Featured projects</h2>
+    {% for project in featured_projects %}
+    <article class="project split{% if forloop.counter|divisibleby:2 %} reverse{% endif %}">
+      {% if project.image %}
+        <img class="project-media" src="{{ project.image.url }}" alt="{{ project.name }}">
+      {% else %}
+        <div class="project-media placeholder placeholder-light">[PROJECT PHOTO]</div>
+      {% endif %}
+      <div>
+        <h3>{{ project.name }}</h3>
+        <p class="meta">{{ project.location }}{% if project.location and project.year %} &middot; {% endif %}{{ project.year|default_if_none:"" }}</p>
+        <p>{{ project.description }}</p>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if stats %}
+<section class="blue stats">
+  <div class="wrap grid stat-grid">
+    {% for stat in stats %}
+    <div><div class="stat-number">{{ stat.number }}</div><div class="stat-label">{{ stat.label }}</div></div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="block dark-2" id="map">
+  <div class="wrap">
+    <h2 class="reveal">Where we have worked</h2>
+    <p class="muted lead">An interactive map. Each pin is a project, and new pins are added from the admin panel.</p>
+    <div id="project-map" class="map" role="region" aria-label="Map of project locations"></div>
+  </div>
+</section>
+
+{% if partners %}
+<section class="block light">
+  <div class="wrap">
+    <h2 class="h-small reveal">Clients &amp; partners</h2>
+    <div class="grid logos">
+      {% for partner in partners %}
+      <div class="logo-box"><img src="{{ partner.logo.url }}" alt="{{ partner.name }}"></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section class="block dark" id="contact">
+  <div class="wrap split contact">
+    <div>
+      <h2 class="reveal">Planning a project?</h2>
+      <p class="muted lead">Tell us what you want to build and we will get back to you with a quote.</p>
+      <p class="muted">
+        {% if site.phone %}{{ site.phone }}<br>{% endif %}
+        {% if site.email %}{{ site.email }}<br>{% endif %}
+        {{ site.address }}
+      </p>
+    </div>
+    <div>
+      {% if messages %}
+        {% for message in messages %}<p class="notice" role="status">{{ message }}</p>{% endfor %}
+      {% endif %}
+      <form method="post" action="{% url 'home' %}#contact" class="quote-form" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="field">
+          {{ field.label_tag }}
+          {{ field }}
+          {{ field.errors }}
+        </div>
+        {% endfor %}
+        <button class="btn btn-primary" type="submit">Send request</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+{{ map_points|json_script:"map-points" }}
+{% endblock %}
+
+{% block scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{% static 'core/js/map.js' %}"></script>
+{% endblock %}

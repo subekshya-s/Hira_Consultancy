@@ -1,0 +1,44 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <script>document.documentElement.classList.add("js")</script>
+  <script src="{% static 'core/js/scroll.js' %}" defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{{ site.company_name }}{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'core/css/site.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="{% url 'home' %}">
+        <img src="{% static 'core/img/hira_logo.jpg' %}" alt="{{ site.company_name }} logo" width="60" height="60">
+        <span>
+          <span class="brand-name">Hira</span>
+          <span class="brand-sub">Engineering Consultancy</span>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <a href="#services">Services</a>
+        <a href="#projects">Projects</a>
+        <a href="#map">Locations</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a class="btn btn-blue" href="#contact">Request a quote</a>
+    </div>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    &copy; {{ site.company_name }} &middot; {{ site.address }}
+  </footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
