@@ -21,7 +21,7 @@
     if (!match) return;
     const [, prefix, digits, suffix] = match;
     const target = parseInt(digits.replace(/,/g, ""), 10);
-    if (!target) return;
+    if (!target || target >= 1000 || /^[.,]\d/.test(suffix)) return;
     const start = performance.now();
     const duration = 1200;
     function tick(now) {
