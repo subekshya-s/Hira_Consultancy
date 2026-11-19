@@ -93,8 +93,7 @@ p { margin: 0 0 16px; }
 
 /* Map */
 .map { height: 420px; border: 1px solid var(--line); background: var(--navy); }
-.pin { width: 16px; height: 16px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 6px rgba(111, 147, 242, .3); }.pin { background: var(--blue); box-shadow: 0 0 0 6px rgba(31, 63, 191, .25); }
-
+.pin { width: 7px; height: 7px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 0 3px rgba(31, 63, 191, .2); }
 /* Contact form */
 .contact { align-items: start; }
 .quote-form .field { margin-bottom: 16px; }
