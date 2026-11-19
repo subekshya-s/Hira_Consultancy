@@ -6,13 +6,15 @@
   const points = JSON.parse(document.getElementById("map-points").textContent);
 
   // Start on Nepal; zoom to the pins if there are any.
-  const map = L.map(el, { scrollWheelZoom: false }).setView([28.3949, 84.124], 7);
- L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  maxZoom: 19,
+  const map = L.map(el, { scrollWheelZoom: false }).setView([28.3949, 84.124], 21);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 22,
+  maxNativeZoom: 19,
+  
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-}).addTo(map);
+  }).addTo(map);
 
-  const icon = L.divIcon({ className: "pin", iconSize: [16, 16], iconAnchor: [8, 8] });
+  const icon = L.divIcon({ className: "pin", iconSize: [7, 7], iconAnchor: [3.5, 3.5] });
   const markers = points.map((p) => {
     // textContent (not innerHTML) so a project name can never inject HTML.
     const popup = document.createElement("div");
@@ -25,6 +27,6 @@
   });
 
   if (markers.length) {
-    map.fitBounds(L.featureGroup(markers).getBounds().pad(0.3), { maxZoom: 12 });
+    map.fitBounds(L.featureGroup(markers).getBounds().pad(0.1), { maxZoom: 12 });
   }
 })();
