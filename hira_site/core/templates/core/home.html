@@ -24,10 +24,23 @@
     <div class="actions">
       <a class="btn btn-primary" href="#services">Our services</a>
       <a class="btn btn-outline" href="#projects">View projects</a>
+      </div>
+   </div>
+</section>
+{% if stats %}
+<section class="stat-tiles">
+  <div class="wrap">
+    <div class="tiles">
+      {% for stat in stats %}
+      <div class="tile">
+        <div class="stat-number">{{ stat.number }}</div>
+        <div class="stat-label">{{ stat.label }}</div>
+      </div>
+      {% endfor %}
     </div>
   </div>
 </section>
-
+{% endif %}
 <section class="block dark-2" id="about">
   <div class="wrap split">
     <div class ="reveal">
@@ -91,15 +104,7 @@
 </section>
 {% endif %}
 
-{% if stats %}
-<section class="blue stats">
-  <div class="wrap grid stat-grid">
-    {% for stat in stats %}
-    <div><div class="stat-number">{{ stat.number }}</div><div class="stat-label">{{ stat.label }}</div></div>
-    {% endfor %}
-  </div>
-</section>
-{% endif %}
+
 
 <section class="block dark-2" id="map">
   <div class="wrap">
