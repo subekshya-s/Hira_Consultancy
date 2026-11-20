@@ -49,4 +49,16 @@
   const onScroll = () => header.classList.toggle("is-scrolled", window.scrollY > 10);
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+
+    // Hero album: move "is-active" to the next slide every 6 seconds
+  const slides = document.querySelectorAll(".hero-slides .slide");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (slides.length > 1 && !reduceMotion) {
+    let current = 0;
+    setInterval(() => {
+      slides[current].classList.remove("is-active");
+      current = (current + 1) % slides.length;
+      slides[current].classList.add("is-active");
+    }, 6000);
+  }
 })();

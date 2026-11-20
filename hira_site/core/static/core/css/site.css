@@ -57,8 +57,11 @@ p { margin: 0 0 16px; }
 .nav a { text-decoration: none; }
 
 /* Hero */
-.hero { padding: clamp(64px, 10vw, 130px) 0; background-color: var(--navy); background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 48px 48px; }
-.hero .lead { color: var(--muted); margin-bottom: 36px; }
+.hero { position: relative; overflow: hidden; padding: clamp(64px, 10vw, 130px) 0; background-color: var(--navy); }
+.hero-content { position: relative; z-index: 2; }
+.hero-slides, .hero-slides .slide { position: absolute; inset: 0; }
+.hero-slides .slide { background-size: cover; background-position: center; opacity: 0; transition: opacity 1.4s ease; }
+.hero-slides .slide.is-active { opacity: 1; }.hero-slides::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(11, 18, 48, .92) 0%, rgba(11, 18, 48, .7) 50%, rgba(11, 18, 48, .4) 100%); }
 
 /* Layout helpers */
 .split { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 48px; align-items: center; }

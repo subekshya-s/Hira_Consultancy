@@ -6,9 +6,18 @@
 {% endblock %}
 
 {% block content %}
+{% static 'core/img/hero/hilsa_karnali.jpg' as hero_photo_1 %}
+{% static 'core/img/hero/field_uav_mobilisation.jpg' as hero_photo_2 %}
+{% static 'core/img/hero/myardi_khola.jpg' as hero_photo_3 %}
+{% static 'core/img/hero/field_gnss_base.jpg' as hero_photo_4 %}
 
 <section class="hero">
-  <div class="wrap">
+  <div class="hero-slides" aria-hidden="true">
+    <div class="slide is-active" style="background-image: url('{{ hero_photo_1 }}')"></div>
+    <div class="slide" style="background-image: url('{{ hero_photo_2 }}')"></div>
+    <div class="slide" style="background-image: url('{{ hero_photo_3 }}')"></div>
+    <div class="slide" style="background-image: url('{{ hero_photo_4 }}')"></div> </div>
+  <div class="wrap hero-content">
     <p class="eyebrow">Engineering consultancy &middot; Koteshwor</p>
     <h1>{{ site.tagline }}</h1>
     <p class="lead">{{ site.hero_text }}</p>
