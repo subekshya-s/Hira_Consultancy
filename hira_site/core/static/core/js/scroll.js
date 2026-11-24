@@ -61,4 +61,5 @@
       slides[current].classList.add("is-active");
     }, 6000);
   }
+
 })();

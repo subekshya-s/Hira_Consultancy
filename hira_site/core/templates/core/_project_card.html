@@ -1,0 +1,17 @@
+<a class="work-card" href="{% url 'project_detail' project.pk %}">
+  <div class="work-card__media">
+    {% if project.image %}
+      <img src="{{ project.image.url }}" alt="{{ project.name }}">
+    {% else %}
+      <div class="work-card__empty"></div>
+    {% endif %}
+    {% if project.service %}<span class="work-card__badge">{{ project.service.title }}</span>{% endif %}
+  </div>
+  <div class="work-card__body">
+    <h3>{{ project.name }}</h3>
+    <p class="work-card__meta">
+      {{ project.location }}{% if project.location and project.year %} &middot; {% endif %}{{ project.year|default_if_none:"" }}
+    </p>
+    {% if project.description %}<p class="work-card__text">{{ project.description|truncatewords:22 }}</p>{% endif %}
+  </div>
+</a>

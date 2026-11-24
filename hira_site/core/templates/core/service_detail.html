@@ -1,0 +1,22 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<section class="block light">
+  <div class="wrap">
+    <p class="eyebrow"><a href="{% url 'service_list' %}">&larr; All services</a></p>
+    <h1 class="work-title">{{ service.title }}</h1>
+    <p class="muted lead">{{ service.description }}</p>
+
+    <div class="service-detail">
+      {% if service.image %}
+        <img class="service-detail__img" src="{{ service.image.url }}" alt="{{ service.title }}">
+      {% endif %}
+      {% if service.full_description %}
+        <div class="service-detail__text">{{ service.full_description|linebreaks }}</div>
+      {% endif %}
+    </div>
+
+    <a href="{% url 'work' %}?service={{ service.slug }}" class="btn btn-blue">Explore {{ service.title }} projects</a>
+  </div>
+</section>
+{% endblock %}

@@ -24,8 +24,8 @@ class ServiceAdmin(admin.ModelAdmin):
 
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ("name", "location", "year", "featured")
-    list_filter = ("featured", "year")
+    list_display = ("name", "location", "year", "service")
+    list_filter = ("service", "year")
     search_fields = ("name", "location")
 
 
