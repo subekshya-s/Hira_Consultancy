@@ -1,0 +1,12 @@
+<article class="service-card">
+  {% if service.image %}
+    <img class="service-card__img" src="{{ service.image.url }}" alt="{{ service.title }}">
+  {% else %}
+    <div class="service-card__img service-card__img--empty"></div>
+  {% endif %}
+  <div class="service-card__body">
+    <h3><a href="{% url 'service_detail' service.slug %}">{{ service.title }}</a></h3>
+    <p>{{ service.description }}</p>
+    <a href="{% url 'work' %}?service={{ service.slug }}" class="service-card__link">Explore Projects &rarr;</a>
+  </div>
+</article>

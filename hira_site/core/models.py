@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 
 
 class SiteSettings(models.Model):
@@ -33,7 +34,20 @@ class Service(models.Model):
     title = models.CharField(max_length=120)
     description = models.TextField()
     order = models.PositiveSmallIntegerField(default=0, help_text="Lower numbers appear first.")
+    slug = models.SlugField(max_length=140,blank=True)
+    full_description = models.TextField(blank=True)
+    image = models.ImageField(upload_to="services/",blank=True)
+    def save(self,*args,**kwargs):
+        if not self.slug:
+            base = slugify(self.title)
+            slug, n = base, 2
+            while Service.objects.filter(slug=slug).exclude(pk=self.pk).exists():
+                slug = f"{base}-{n}"
+                n += 1
+            self.slug = slug
+        super().save(*args,**kwargs)
 
+    
     class Meta:
         ordering = ["order", "id"]
 
@@ -43,13 +57,14 @@ class Service(models.Model):
 
 class Project(models.Model):
     name = models.CharField(max_length=150)
+    service = models.ForeignKey("Service",null=True,blank=True,on_delete=models.SET_NULL,related_name="projects",)
     location = models.CharField(max_length=150, blank=True)
     year = models.PositiveSmallIntegerField(null=True, blank=True)
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to="projects/", blank=True)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
-    featured = models.BooleanField(default=False, help_text="Show in the Featured projects section.")
+    
 
     class Meta:
         ordering = ["-year", "name"]
@@ -98,3 +113,4 @@ class QuoteRequest(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.created_at:%Y-%m-%d})"
+

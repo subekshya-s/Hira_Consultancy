@@ -55,14 +55,10 @@
 <section class="block light" id="services">
   <div class="wrap">
     <p class="eyebrow">What we do</p>
-    <h2 class ="reveal">Our services</h2>
-    <div class="grid cards" data-stagger>
+    <h2 class="reveal">Our services</h2>
+    <div class="service-grid" data-stagger>
       {% for service in services %}
-      <article class="card">
-        <div class="card-number">{{ forloop.counter|stringformat:"02d" }}</div>
-        <h3>{{ service.title }}</h3>
-        <p>{{ service.description }}</p>
-      </article>
+        {% include "core/_service_card.html" %}
       {% empty %}
       <p>No services yet. Add them in the admin panel.</p>
       {% endfor %}
@@ -82,27 +78,6 @@
   </div>
 </section>
 
-{% if featured_projects %}
-<section class="block light" id="projects">
-  <div class="wrap">
-    <h2 class="reveal">Featured projects</h2>
-    {% for project in featured_projects %}
-    <article class="project split{% if forloop.counter|divisibleby:2 %} reverse{% endif %}">
-      {% if project.image %}
-        <img class="project-media" src="{{ project.image.url }}" alt="{{ project.name }}">
-      {% else %}
-        <div class="project-media placeholder placeholder-light">[PROJECT PHOTO]</div>
-      {% endif %}
-      <div>
-        <h3>{{ project.name }}</h3>
-        <p class="meta">{{ project.location }}{% if project.location and project.year %} &middot; {% endif %}{{ project.year|default_if_none:"" }}</p>
-        <p>{{ project.description }}</p>
-      </div>
-    </article>
-    {% endfor %}
-  </div>
-</section>
-{% endif %}
 
 
 

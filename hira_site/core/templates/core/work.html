@@ -1,0 +1,65 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block head %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+{% endblock %}
+
+{% block content %}
+<section class="block light work-page">
+  <div class="wrap">
+    <p class="eyebrow">Our work</p>
+    <h1 class="work-title">{% if active %}{{ active.title }}{% else %}Our projects{% endif %}</h1>
+    <p class="muted lead">Browse our projects by service and see where we have worked.</p>
+
+    <div class="work-tree">
+      <a href="{% url 'work' %}{% if view == 'map' %}?view=map{% endif %}"
+         class="tree-root{% if not active %} is-active{% endif %}">
+        Our work <span>{{ total }}</span>
+      </a>
+      <ul class="tree-children">
+        {% for s in services %}
+        <li>
+          <a href="{% url 'work' %}?service={{ s.slug }}{% if view == 'map' %}&view=map{% endif %}"
+             class="tree-node{% if active and active.pk == s.pk %} is-active{% endif %}">
+            {{ s.title }}
+            <span>{{ s.project_count }} project{{ s.project_count|pluralize }}</span>
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="view-toggle">
+      <a href="?{% if active %}service={{ active.slug }}{% endif %}"
+         class="view-toggle__btn{% if view == 'details' %} is-active{% endif %}">Project details</a>
+      <a href="?{% if active %}service={{ active.slug }}&{% endif %}view=map"
+         class="view-toggle__btn{% if view == 'map' %} is-active{% endif %}">Project map</a>
+    </div>
+
+    {% if view == 'map' %}
+      <div id="project-map" class="map map--work" role="region" aria-label="Map of project locations"></div>
+      {% if not map_points %}
+        <p class="work-empty">None of these projects has coordinates yet. Add latitude and longitude in the admin.</p>
+      {% endif %}
+    {% else %}
+      <div class="work-grid">
+        {% for project in projects %}
+          {% include "core/_project_card.html" %}
+        {% empty %}
+        <p class="work-empty">No projects in this category yet.</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{{ map_points|json_script:"map-points" }}
+{% endblock %}
+
+{% block scripts %}
+{% if view == 'map' %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{% static 'core/js/map.js' %}"></script>
+{% endif %}
+{% endblock %}

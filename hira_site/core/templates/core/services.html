@@ -1,0 +1,19 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<section class="block light" id="services">
+  <div class="wrap">
+    <p class="eyebrow">Our services</p>
+    <h1 class="work-title">Comprehensive Surveying Solutions</h1>
+    <p class="muted lead">Our expertise spans a wide range of services, ensuring precision and reliability for every project need.</p>
+
+    <div class="service-grid" style="margin-top: 40px;">
+      {% for service in services %}
+        {% include "core/_service_card.html" %}
+      {% empty %}
+      <p>No services yet. Add them in the admin panel.</p>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
