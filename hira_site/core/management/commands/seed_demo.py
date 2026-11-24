@@ -103,10 +103,11 @@ class Command(BaseCommand):
                 Stat.objects.create(number=number, label=label, order=i)
 
         if not Project.objects.exists():
+            lidar = Service.objects.filter(title="Survey & UAV-LiDAR Mapping").first()
             for name, location, year, desc, lat, lng, featured, photo in PROJECTS:
                 project = Project.objects.create(
                     name=name, location=location, year=year, description=desc,
-                    latitude=lat, longitude=lng, featured=featured,
+                    latitude=lat, longitude=lng, service=lidar,
                 )
                 path = PHOTOS / photo if photo else None
                 if path and path.exists():
