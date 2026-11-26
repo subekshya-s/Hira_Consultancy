@@ -37,6 +37,7 @@ class Service(models.Model):
     slug = models.SlugField(max_length=140,blank=True)
     full_description = models.TextField(blank=True)
     image = models.ImageField(upload_to="services/",blank=True)
+    icon = models.CharField(max_length=40,blank=True,default="ti-map-2",help_text="Icon name from tabler-icons.io, for example ti-droplet",)
     def save(self,*args,**kwargs):
         if not self.slug:
             base = slugify(self.title)
