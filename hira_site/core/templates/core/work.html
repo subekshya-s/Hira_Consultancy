@@ -3,27 +3,32 @@
 
 {% block head %}
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+
 {% endblock %}
 
 {% block content %}
 <section class="block light work-page">
   <div class="wrap">
-    <p class="eyebrow">Our work</p>
+    <p class="eyebrow">Projects</p>
     <h1 class="work-title">{% if active %}{{ active.title }}{% else %}Our projects{% endif %}</h1>
     <p class="muted lead">Browse our projects by service and see where we have worked.</p>
 
     <div class="work-tree">
       <a href="{% url 'work' %}{% if view == 'map' %}?view=map{% endif %}"
          class="tree-root{% if not active %} is-active{% endif %}">
-        Our work <span>{{ total }}</span>
+        <span class="tree-root__icon"><i class="ti ti-folders" aria-hidden="true"></i></span>
+        <span class="tree-root__label">Our projects</span>
+        <span class="tree-root__count">{{ total }}</span>
       </a>
       <ul class="tree-children">
         {% for s in services %}
         <li>
           <a href="{% url 'work' %}?service={{ s.slug }}{% if view == 'map' %}&view=map{% endif %}"
              class="tree-node{% if active and active.pk == s.pk %} is-active{% endif %}">
-            {{ s.title }}
-            <span>{{ s.project_count }} project{{ s.project_count|pluralize }}</span>
+            <span class="tree-node__icon"><i class="ti {{ s.icon|default:'ti-map-2' }}" aria-hidden="true"></i></span>
+            <strong>{{ s.title }}</strong>
+            <small>{{ s.project_count }} project{{ s.project_count|pluralize }}</small>
           </a>
         </li>
         {% endfor %}

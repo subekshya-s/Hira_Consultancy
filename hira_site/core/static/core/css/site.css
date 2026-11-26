@@ -213,25 +213,86 @@ html { scroll-behavior: smooth; scroll-padding-top: 90px; }
 }
 .service-card__link:hover { text-decoration: underline; opacity: 1; }
 
-/* ===== Our Work page ===== */
-.work-title { font-size: clamp(34px, 5vw, 52px); margin-bottom: 14px; }
+/* ===== Our Work: tree filter with icon cards ===== */
+.work-tree { margin: 40px 0 48px; --line-color: #B4BEE0; --gap: 16px; --stem: 32px; }
 
-.work-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin: 32px 0 24px; }
-.work-tab {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 9px 18px; border-radius: 999px;
+.tree-root {
+  position: relative; display: flex; align-items: center; gap: 14px;
+  width: fit-content; margin: 0 auto; padding: 12px 22px 12px 14px;
+  border-radius: 14px; background: #fff; border: 1px solid var(--card-line);
+  color: var(--ink); text-decoration: none; transition: background .2s;
+}
+.tree-root__icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  background: #E4E9F7; color: var(--blue); font-size: 22px;
+}
+.tree-root__label { font: 700 20px var(--serif); }
+.tree-root__count {
+  min-width: 30px; padding: 2px 10px; border-radius: 999px; text-align: center;
+  background: #E4E9F7; color: var(--ink-muted); font: 600 13px var(--sans);
+}
+.tree-root:hover { background: #F0F3FB; opacity: 1; }
+.tree-root.is-active { background: var(--navy); border-color: var(--navy); color: #fff; }
+.tree-root.is-active .tree-root__icon { background: rgba(255,255,255,.14); color: var(--accent); }
+.tree-root.is-active .tree-root__count { background: rgba(255,255,255,.16); color: #fff; }
+
+.tree-root::after {
+  content: ""; position: absolute; left: 50%; top: 100%; margin-left: -1px;
+  width: 2px; height: var(--stem); background: var(--line-color);
+}
+.tree-root::before {
+  content: ""; position: absolute; left: 50%; top: calc(100% + var(--stem));
+  width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%;
+  background: var(--line-color); border: 2px solid var(--paper); z-index: 2;
+}
+
+.tree-children {
+  display: flex; justify-content: center; gap: var(--gap);
+  list-style: none; margin: var(--stem) 0 0; padding: 0;
+}
+.tree-children li { position: relative; flex: 1 1 0; min-width: 0; padding-top: var(--stem); }
+.tree-children li::before {
+  content: ""; position: absolute; top: 0; left: 50%; margin-left: -1px;
+  width: 2px; height: var(--stem); background: var(--line-color);
+}
+.tree-children li::after {
+  content: ""; position: absolute; top: 0; margin-top: -1px;
+  left: calc(var(--gap) / -2); right: calc(var(--gap) / -2);
+  height: 2px; background: var(--line-color);
+}
+.tree-children li:first-child::after { left: 50%; }
+.tree-children li:last-child::after { right: 50%; }
+.tree-children li:only-child::after { display: none; }
+.tree-children li:has(.is-active)::before { background: var(--blue); }
+
+.tree-node {
+  position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  height: 100%; padding: 18px 12px 16px; border-radius: 14px;
   background: #fff; border: 1px solid var(--card-line);
-  color: var(--ink); font-size: 14px; font-weight: 600; text-decoration: none;
-  transition: background .2s;
+  color: var(--ink); text-align: center; text-decoration: none;
+  transition: background .2s, border-color .2s;
 }
-.work-tab span {
-  background: #E4E9F7; color: var(--ink-muted);
-  border-radius: 999px; padding: 1px 8px; font-size: 12px;
+.tree-node::before {
+  content: ""; position: absolute; top: -6px; left: 50%;
+  width: 10px; height: 10px; margin-left: -5px; border-radius: 50%;
+  background: var(--line-color); border: 2px solid var(--paper);
 }
-.work-tab:hover { background: #E4E9F7; opacity: 1; }
-.work-tab.is-active { background: var(--blue); border-color: var(--blue); color: #fff; }
-.work-tab.is-active span { background: rgba(255,255,255,.2); color: #fff; }
+.tree-node__icon {
+  width: 44px; height: 44px; margin-bottom: 8px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  background: #E4E9F7; color: var(--blue); font-size: 22px;
+}
+.tree-node strong { font-size: 14px; font-weight: 600; line-height: 1.3; }
+.tree-node small { font-size: 13px; color: var(--ink-muted); }
+.tree-node:hover { background: #F0F3FB; border-color: var(--accent); opacity: 1; }
 
+.tree-node.is-active { background: var(--blue); border-color: var(--blue); color: #fff; }
+.tree-node.is-active::before { background: var(--blue); }
+.tree-node.is-active .tree-node__icon { background: rgba(255,255,255,.18); color: #fff; }
+.tree-node.is-active small { color: rgba(255,255,255,.8); }
+
+/* ===== Our Work: toggle, map, project cards ===== */
 .view-toggle { display: flex; justify-content: flex-end; gap: 10px; margin-bottom: 28px; }
 .view-toggle__btn {
   padding: 9px 20px; border-radius: 8px;
@@ -256,7 +317,6 @@ html { scroll-behavior: smooth; scroll-padding-top: 90px; }
   transition: transform .25s ease, box-shadow .25s ease;
 }
 .work-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(11, 18, 48, .12); opacity: 1; }
-
 .work-card__media { position: relative; height: 220px; background: #E4E9F7; }
 .work-card__media img, .work-card__empty { width: 100%; height: 100%; object-fit: cover; display: block; }
 .work-card__badge {
@@ -268,55 +328,3 @@ html { scroll-behavior: smooth; scroll-padding-top: 90px; }
 .work-card__body h3 { font-size: 19px; color: var(--ink); margin-bottom: 6px; }
 .work-card__meta { color: var(--ink-muted); font-size: 14px; margin-bottom: 10px; }
 .work-card__text { color: var(--ink-muted); font-size: 15px; margin: 0; }
- /* ===== Our Work: tree filter ===== */
-.work-tree { margin: 40px 0 48px; --line-color: #8D97BE; --gap: 20px; --stem: 28px; }
-
-.tree-root {
-  position: relative; display: block; width: fit-content; margin: 0 auto;
-  padding: 16px 40px; border-radius: 10px;
-  background: #fff; border: 2px solid var(--ink); color: var(--ink);
-  font: 700 20px var(--serif); text-align: center; text-decoration: none;
-}
-.tree-root span { margin-left: 8px; font: 600 13px var(--sans); color: var(--ink-muted); }
-.tree-root::after {
-  content: ""; position: absolute; left: 50%; top: 100%;
-  width: 2px; height: var(--stem); background: var(--line-color);
-}
-.tree-root.is-active { background: var(--navy); color: #fff; }
-.tree-root.is-active span { color: var(--muted); }
-
-.tree-children {
-  display: flex; justify-content: center; gap: var(--gap);
-  list-style: none; margin: var(--stem) 0 0; padding: 0;
-}
-.tree-children li { position: relative; flex: 1 1 0; min-width: 0; max-width: 230px; padding-top: var(--stem); }
-.tree-children li::before {            /* vertical stub down to the box */
-  content: ""; position: absolute; top: 0; left: 50%;
-  width: 2px; height: var(--stem); background: var(--line-color);
-}
-.tree-children li::after {             /* horizontal bar */
-  content: ""; position: absolute; top: 0;
-  left: calc(var(--gap) / -2); right: calc(var(--gap) / -2);
-  height: 2px; background: var(--line-color);
-}
-.tree-children li:first-child::after { left: 50%; }
-.tree-children li:last-child::after { right: 50%; }
-.tree-children li:only-child::after { display: none; }
-
-.tree-node {
-  display: block; height: 100%; padding: 16px 14px; border-radius: 10px;
-  background: #fff; border: 1px solid var(--card-line);
-  color: var(--ink); font-weight: 600; font-size: 15px; line-height: 1.35;
-  text-align: center; text-decoration: none;
-  transition: background .2s, border-color .2s;
-}
-.tree-node span { display: block; margin-top: 6px; font-weight: 400; font-size: 13px; color: var(--ink-muted); }
-.tree-node:hover { background: #E4E9F7; opacity: 1; }
-.tree-node.is-active { background: var(--blue); border-color: var(--blue); color: #fff; }
-.tree-node.is-active span { color: rgba(255,255,255,.8); }
-
-@media (max-width: 800px) {
-  .tree-children { flex-direction: column; align-items: stretch; margin-top: 20px; }
-  .tree-children li { max-width: none; padding-top: 0; }
-  .tree-children li::before, .tree-children li::after, .tree-root::after { display: none; }
-}
