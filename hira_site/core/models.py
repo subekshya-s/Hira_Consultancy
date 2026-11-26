@@ -15,6 +15,13 @@ class SiteSettings(models.Model):
     address = models.CharField(max_length=200, default="Koteshwor, Kathmandu")
     phone = models.CharField(max_length=40, blank=True)
     email = models.EmailField(blank=True)
+    vision = models.TextField(blank=True)
+    mission = models.TextField(blank=True)
+    objectives = models.TextField(blank=True, help_text="One objective per line.")
+    strategy = models.TextField(blank=True, help_text="One point per line.")
+    about_image = models.ImageField(upload_to="about/",blank=True)
+    about_background = models.ImageField(upload_to="about/",blank=True,help_text="Wide photo for about page background")
+    
 
     class Meta:
         verbose_name = "Site settings"
@@ -22,6 +29,14 @@ class SiteSettings(models.Model):
 
     def __str__(self):
         return self.company_name
+
+    @property
+    def objective_list(self):
+        return [l.strip().lstrip("-•· ").strip() for l in self.objectives.splitlines() if l.strip()]
+
+    @property
+    def strategy_list(self):
+        return [l.strip().lstrip("-•· ").strip() for l in self.strategy.splitlines() if l.strip()]
 
     @classmethod
     def load(cls):
