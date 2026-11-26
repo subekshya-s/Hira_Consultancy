@@ -49,21 +49,30 @@ def work(request):
     projects = Project.objects.select_related("service")
 
     active = None
-    slug = request.GET.get("service","")
+    slug = request.GET.get("service", "")
     if slug:
         active = services.filter(slug=slug).first()
         if active:
             projects = projects.filter(service=active)
 
+    view = "map" if request.GET.get("view") == "map" else "details"
+
+    map_points = [
+        {"name": p.name, "location": p.location, "lat": p.latitude, "lng": p.longitude}
+        for p in projects
+        if p.has_coordinates
+    ]
+
     context = {
         "site": SiteSettings.load(),
         "services": services,
-        "projects":projects,
-        "active":active,
-        "total" : Project.objects.count(),
-
+        "projects": projects,
+        "active": active,
+        "total": Project.objects.count(),
+        "view": view,
+        "map_points": map_points,
     }
-    return render(request,"core/work.html",context)
+    return render(request, "core/work.html", context)
 
 def project_detail(request, pk):
     project = get_object_or_404(Project.objects.select_related("service"), pk=pk)

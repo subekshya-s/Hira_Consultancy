@@ -61,5 +61,60 @@
       slides[current].classList.add("is-active");
     }, 6000);
   }
+    // About tabs: Vision / Mission / Objectives / Strategy
+  document.querySelectorAll("[data-about-tabs]").forEach((box) => {
+    const tabs = box.querySelectorAll("[role='tab']");
+    const panels = box.querySelectorAll("[role='tabpanel']");
+    function show(i) {
+      tabs.forEach((t, n) => {
+        t.classList.toggle("is-active", n === i);
+        t.setAttribute("aria-selected", n === i ? "true" : "false");
+      });
+      panels.forEach((p, n) => p.classList.toggle("is-active", n === i));
+    }
+    tabs.forEach((t, i) => t.addEventListener("click", () => show(i)));
+    show(0);
+  });
+   // About slideshow: Vision / Mission / Objectives / Strategy
+  document.querySelectorAll("[data-about-slider]").forEach((box) => {
+    const track = box.querySelector(".about-track");
+    const slides = box.querySelectorAll(".about-slide");
+    const dotsBox = box.querySelector(".about-dots");
+    const count = box.querySelector(".about-count");
+    const prev = box.querySelector(".about-arrow.prev");
+    const next = box.querySelector(".about-arrow.next");
+    let index = 0;
 
+    slides.forEach((_, i) => {
+      const d = document.createElement("button");
+      d.type = "button";
+      d.className = "about-dot";
+      d.setAttribute("aria-label", "Go to slide " + (i + 1));
+      d.addEventListener("click", () => goTo(i));
+      dotsBox.appendChild(d);
+    });
+    const dots = dotsBox.querySelectorAll(".about-dot");
+
+    function fitHeight() {
+      track.style.height = slides[index].offsetHeight + "px";
+    }
+    function goTo(i) {
+      index = (i + slides.length) % slides.length;
+      track.scrollTo({ left: track.clientWidth * index, behavior: "smooth" });
+      fitHeight();
+    }
+    function update() {
+      index = Math.round(track.scrollLeft / track.clientWidth);
+      dots.forEach((d, n) => d.classList.toggle("is-active", n === index));
+      count.textContent = (index + 1) + " / " + slides.length;
+      fitHeight();
+    }
+
+    prev.addEventListener("click", () => goTo(index - 1));
+    next.addEventListener("click", () => goTo(index + 1));
+    track.addEventListener("scroll", () => requestAnimationFrame(update), { passive: true });
+    window.addEventListener("resize", () => goTo(index));
+    window.addEventListener("load", update);
+    update();
+  });
 })();

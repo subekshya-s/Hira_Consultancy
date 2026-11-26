@@ -3,6 +3,7 @@
 
 {% block head %}
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 {% endblock %}
 
 {% block content %}
@@ -41,17 +42,71 @@
   </div>
 </section>
 {% endif %}
-<section class="block dark-2" id="about">
-  <div class="wrap split">
-    <div class ="reveal">
+<section class="block about{% if site.about_background %} has-bg{% endif %}" id="about"
+  {% if site.about_background %}style="background-image: url('{{ site.about_background.url }}')"{% endif %}>
+  <div class="wrap about-grid{% if not site.about_image %} about-grid--single{% endif %}">
+
+    <div class="about-main reveal">
       <p class="eyebrow">About us &middot; Estd. {{ site.established }}</p>
       <h2>{{ site.company_name }}</h2>
       <div class="muted prose">{{ site.about_text|linebreaks }}</div>
+
+      {% if site.vision or site.mission or site.objective_list or site.strategy_list %}
+      <div class="about-slider" data-about-slider>
+        <div class="about-track">
+          {% if site.vision %}
+          <article class="about-slide">
+            <h3><i class="ti ti-eye" aria-hidden="true"></i>Vision</h3>
+            <p>{{ site.vision }}</p>
+          </article>
+          {% endif %}
+          {% if site.mission %}
+          <article class="about-slide">
+            <h3><i class="ti ti-target-arrow" aria-hidden="true"></i>Mission</h3>
+            <p>{{ site.mission }}</p>
+          </article>
+          {% endif %}
+          {% if site.objective_list %}
+          <article class="about-slide">
+            <h3><i class="ti ti-list-check" aria-hidden="true"></i>Objectives</h3>
+            <ul class="about-list">
+              {% for item in site.objective_list %}<li><span class="about-num">{{ forloop.counter }}</span><span>{{ item }}</span></li>{% endfor %}
+            </ul>
+          </article>
+          {% endif %}
+          {% if site.strategy_list %}
+          <article class="about-slide">
+            <h3><i class="ti ti-route" aria-hidden="true"></i>Strategy</h3>
+            <ul class="about-list">
+              {% for item in site.strategy_list %}<li><span class="about-num">{{ forloop.counter }}</span><span>{{ item }}</span></li>{% endfor %}
+            </ul>
+          </article>
+          {% endif %}
+        </div>
+
+        <div class="about-slider__foot">
+          <div class="about-dots"></div>
+          <div class="about-nav">
+            <span class="about-count"></span>
+            <div class="about-arrows">
+              <button type="button" class="about-arrow prev" aria-label="Previous"><i class="ti ti-chevron-left" aria-hidden="true"></i></button>
+              <button type="button" class="about-arrow next" aria-label="Next"><i class="ti ti-chevron-right" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
     </div>
-    <div class="placeholder placeholder-dark reveal" style="--delay:.15s">[COMPANY OR TEAM PHOTO]</div>
+
+    {% if site.about_image %}
+    <div class="about-photo reveal" style="--delay:.15s">
+      <img src="{{ site.about_image.url }}" alt="{{ site.company_name }} team">
+      <span class="about-photo__badge">Estd. {{ site.established }}</span>
+    </div>
+    {% endif %}
+
   </div>
 </section>
-
 <section class="block light" id="services">
   <div class="wrap">
     <p class="eyebrow">What we do</p>
