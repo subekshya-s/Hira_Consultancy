@@ -130,3 +130,14 @@ class QuoteRequest(models.Model):
     def __str__(self):
         return f"{self.name} ({self.created_at:%Y-%m-%d})"
 
+class AboutPhoto(models.Model):
+    image = models.ImageField(upload_to="about/")
+    caption = models.CharField(max_length=120, blank=True)
+    order = models.PositiveSmallIntegerField(default=0, help_text="Lower numbers appear first.")
+
+    class Meta:
+        ordering = ["order", "id"]
+        verbose_name = "About photo"
+
+    def __str__(self):
+        return self.caption or f"Photo {self.pk}"

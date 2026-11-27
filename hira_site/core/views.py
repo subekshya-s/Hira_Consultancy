@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render,get_object_or_404
 from django.urls import reverse
 from django.db.models import Count
 from .forms import QuoteRequestForm
-from .models import Partner, Project, Service, SiteSettings, Stat
+from .models import Partner, Project, Service, SiteSettings, Stat,AboutPhoto
 
 
 def home(request):
@@ -31,6 +31,7 @@ def home(request):
         "partners": Partner.objects.all(),
         "map_points": map_points,
         "form": form,
+        "about_photos": AboutPhoto.objects.all(),
     }
     return render(request, "core/home.html", context)
 

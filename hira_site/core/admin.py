@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Partner, Project, QuoteRequest, Service, SiteSettings, Stat
+from .models import Partner, Project, QuoteRequest, Service, SiteSettings, Stat,AboutPhoto
 
 admin.site.site_header = "Hira Engineering Consultancy admin"
 admin.site.site_title = "Hira admin"
@@ -49,3 +49,8 @@ class QuoteRequestAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return False
+
+@admin.register(AboutPhoto)
+class AboutPhotoAdmin(admin.ModelAdmin):
+    list_display = ("__str__","order")
+    list_editable = ("order",)

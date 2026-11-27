@@ -117,4 +117,39 @@
     window.addEventListener("load", update);
     update();
   });
+    // About team photo slideshow: soft fade every 5 seconds
+  document.querySelectorAll("[data-photo-slider]").forEach((box) => {
+    const slides = box.querySelectorAll(".about-photo__slide");
+    if (slides.length < 2) return;
+    const dotsBox = box.querySelector(".about-photo__dots");
+    let index = 0, timer;
+
+    const dots = [...slides].map((_, i) => {
+      const d = document.createElement("button");
+      d.type = "button";
+      d.className = "about-photo__dot";
+      d.setAttribute("aria-label", "Show photo " + (i + 1));
+      d.addEventListener("click", () => { show(i); restart(); });
+      dotsBox.appendChild(d);
+      return d;
+    });
+
+    function show(i) {
+      slides[index].classList.remove("is-active");
+      dots[index].classList.remove("is-active");
+      index = (i + slides.length) % slides.length;
+      slides[index].classList.add("is-active");
+      dots[index].classList.add("is-active");
+    }
+    function start() {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      timer = setInterval(() => show(index + 1), 5000);
+    }
+    function restart() { clearInterval(timer); start(); }
+
+    box.addEventListener("mouseenter", () => clearInterval(timer));
+    box.addEventListener("mouseleave", restart);
+    dots[0].classList.add("is-active");
+    start();
+  });
 })();
