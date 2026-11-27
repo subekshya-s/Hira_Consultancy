@@ -24,7 +24,7 @@
     <p class="lead">{{ site.hero_text }}</p>
     <div class="actions">
       <a class="btn btn-primary" href="#services">Our services</a>
-      <a class="btn btn-outline" href="#projects">View projects</a>
+      <a class="btn btn-outline" href="{% url 'work' %}">View projects</a>
       </div>
    </div>
 </section>
@@ -44,15 +44,33 @@
 {% endif %}
 <section class="block about{% if site.about_background %} has-bg{% endif %}" id="about"
   {% if site.about_background %}style="background-image: url('{{ site.about_background.url }}')"{% endif %}>
-  <div class="wrap about-grid{% if not site.about_image %} about-grid--single{% endif %}">
+    <div class="wrap about-head reveal">
+    <p class="eyebrow">Who we are</p>
+    <h2>About us</h2>
+  </div>
 
-    <div class="about-main reveal">
-      <p class="eyebrow">About us &middot; Estd. {{ site.established }}</p>
-      <h2>{{ site.company_name }}</h2>
-      <div class="muted prose">{{ site.about_text|linebreaks }}</div>
+  
+  <div class="wrap about-grid{% if not about_photos and not site.about_image and not site.vision and not site.mission and not site.objective_list and not site.strategy_list %} about-grid--single{% endif %}">
+
+    <div class="about-left">
+
+      {% if about_photos or site.about_image %}
+      <div class="about-photo reveal" data-photo-slider>
+        <div class="about-photo__slides">
+          {% for p in about_photos %}
+            <img class="about-photo__slide{% if forloop.first %} is-active{% endif %}"
+                 src="{{ p.image.url }}" alt="{{ p.caption|default:site.company_name }}">
+          {% empty %}
+            <img class="about-photo__slide is-active" src="{{ site.about_image.url }}" alt="{{ site.company_name }} team">
+          {% endfor %}
+        </div>
+        <span class="about-photo__badge">Estd. {{ site.established }}</span>
+        <div class="about-photo__dots"></div>
+      </div>
+      {% endif %}
 
       {% if site.vision or site.mission or site.objective_list or site.strategy_list %}
-      <div class="about-slider" data-about-slider>
+      <div class="about-slider reveal" data-about-slider>
         <div class="about-track">
           {% if site.vision %}
           <article class="about-slide">
@@ -96,14 +114,14 @@
         </div>
       </div>
       {% endif %}
+
     </div>
 
-    {% if site.about_image %}
-    <div class="about-photo reveal" style="--delay:.15s">
-      <img src="{{ site.about_image.url }}" alt="{{ site.company_name }} team">
-      <span class="about-photo__badge">Estd. {{ site.established }}</span>
+    <div class="about-intro reveal" style="--delay:.15s">
+      <p class="eyebrow">Our Company</p>
+      <h2>{{ site.company_name }}</h2>
+      <div class="muted prose">{{ site.about_text|linebreaks }}</div>
     </div>
-    {% endif %}
 
   </div>
 </section>
@@ -140,7 +158,7 @@
   <div class="wrap">
     <h2 class="reveal">Where we have worked</h2>
     <p class="muted lead"></p>
-    <div id="project-map" class="map" role="region" aria-label="Map of project locations"></div>
+    <div id="project-map" class="map" data-districts="{% static 'core/data/nepal_districts.geojson' %}" role="region" aria-label="Map of project locations"></div>
   </div>
 </section>
 
